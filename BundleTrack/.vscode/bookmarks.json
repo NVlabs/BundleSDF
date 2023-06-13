@@ -1,0 +1,74 @@
+{
+	"files": [
+		{
+			"path": "src/cuda/SBA.cpp",
+			"bookmarks": [
+				{
+					"line": 91,
+					"column": 29,
+					"label": "SBA::align"
+				},
+				{
+					"line": 149,
+					"column": 10,
+					"label": "CUDASolverBundling::solve"
+				}
+			]
+		},
+		{
+			"path": "src/cuda/Solver/CUDASolverBundling.cpp",
+			"bookmarks": [
+				{
+					"line": 207,
+					"column": 30,
+					"label": ""
+				},
+				{
+					"line": 301,
+					"column": 49,
+					"label": "CUDASolverBundling::buildVariablesToCorrespondencesTable"
+				}
+			]
+		},
+		{
+			"path": "src/cuda/Solver/SolverBundling.cu",
+			"bookmarks": [
+				{
+					"line": 181,
+					"column": 37,
+					"label": "BuildDenseSystem_Kernel"
+				},
+				{
+					"line": 329,
+					"column": 23,
+					"label": "BuildDenseSystem"
+				},
+				{
+					"line": 827,
+					"column": 21,
+					"label": "PCGInit_Kernel1"
+				},
+				{
+					"line": 1102,
+					"column": 5,
+					"label": "PCGIteration"
+				},
+				{
+					"line": 1240,
+					"column": 16,
+					"label": "solveBundlingStub"
+				}
+			]
+		},
+		{
+			"path": "src/cuda/Solver/SolverBundlingEquationsLie.h",
+			"bookmarks": [
+				{
+					"line": 82,
+					"column": 35,
+					"label": "evalMinusJTFDevice"
+				}
+			]
+		}
+	]
+}

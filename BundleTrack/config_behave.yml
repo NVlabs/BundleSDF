@@ -1,0 +1,114 @@
+data_dir: /mnt/9a72c439-d0a7-45e8-8d20-d7a235d02763/DATASET/behave/BOWEN_ADDON/Date03_Sub03_boxmedium.2.color
+model_name: textured_simple
+model_dir: ""
+debug_dir: /home/bowen/debug/BundleTrack/
+init_pose_dir: ""
+SPDLOG: 2
+port: '5555'
+seg_port: '1111'
+nerf_port: "9999"
+image_down_scale: 3
+
+segmentation:
+  ob_scales: [0.3,0.3,0.3]
+  tolerance: 0.03
+
+depth_processing:
+  zfar: 3.5
+  erode:
+    radius: 1
+    diff: 0.001
+    ratio: 0.8   #if ratio larger than this, depth set to 0
+  bilateral_filter:
+    radius: 2
+    sigma_D: 2
+    sigma_R: 100000
+  outlier_removal:
+    num: 30
+    std_mul: 3
+  edge_normal_thres: 10  #deg between normal and ray
+  denoise_cloud: False
+  percentile: 100
+
+visible_angle: 70   # Angle between normal and point to camera origin within XXX is regarded as visible
+
+bundle:
+  num_iter_outter: 7
+  num_iter_inner: 5
+  window_size: 5  #exclude keyframes, include new frame
+  max_BA_frames: 10
+  subset_selection_method: normal_orientation_nearest
+  depth_association_radius: 5  # 0: findDenseCorr; 1: findDenseCorrNearestNeighbor3D
+  non_neighbor_max_rot: 90
+  non_neighbor_min_visible: 0.1   # ratio of pixel visible
+  icp_pose_rot_thres: 60    # Rotation larger than XX deg is ignored for icp
+  w_rpi: 0
+  w_p2p: 1
+  w_fm: 1
+  w_sdf: 0
+  w_pm: 0
+  robust_delta: 0.005
+  min_fm_edges_newframe: 15
+  image_downscale: [4]
+  feature_edge_dist_thres: 0.01
+  feature_edge_normal_thres: 30   # Normal angle should be within this range
+  max_optimized_feature_loss: 0.05
+
+keyframe:
+  min_interval: 1
+  min_feat_num: 0
+  min_trans: 0
+  min_rot: 5
+  min_visible: 1
+
+
+sift:
+  scales: [2,4,8]
+  max_match_per_query: 5
+  nOctaveLayers: 3
+  contrastThreshold: 0.01
+  edgeThreshold: 50
+  sigma: 1.6
+
+feature_corres:
+  mutual: True
+  map_points: False
+  max_dist_no_neighbor: 999
+  max_normal_no_neighbor: 180
+  max_dist_neighbor: 0.1
+  max_normal_neighbor: 30
+  suppression_patch_size: 5
+  max_view_normal_angle: 180
+  min_match_with_ref: 15
+  resize: 400
+  rematch_after_nerf: False
+
+ransac:
+  max_iter: 2000
+  num_sample: 3
+  inlier_dist: 0.01
+  inlier_normal_angle: 20
+  desired_succ_rate: 0.99
+  max_trans_neighbor: 0.1   #ransac model estimated pose shouldnt be too far
+  max_rot_deg_neighbor: 30
+  max_trans_no_neighbor: 999
+  max_rot_no_neighbor: 180
+  epipolar_thres: 1
+  min_match_after_ransac: 5
+
+p2p:
+  projective: false
+  max_dist: 0.02
+  max_normal_angle: 45
+
+sdf_edge:
+  max_dist: 0.02
+
+shape:
+  res: 0.005
+  xrange: [-0.2,0.2]
+  yrange: [-0.2,0.2]
+  zrange: [-0.2,0.2]
+  max_weight: 100
+  truncate_dist: 0.005
+
