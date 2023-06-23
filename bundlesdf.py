@@ -744,7 +744,7 @@ class BundleSdf:
     # mesh_files = sorted(glob.glob(f"{self.debug_dir}/final/nerf/step_*_mesh_normalized_space.obj"))
     # mesh = trimesh.load(mesh_files[-1])
 
-    mesh,sigma,query_pts = nerf.extract_mesh(voxel_size=self.cfg_nerf['mesh_resolution'],isolevel=0, mesh_savepath='',return_sigma=True)
+    mesh,sigma,query_pts = nerf.extract_mesh(voxel_size=self.cfg_nerf['mesh_resolution'],isolevel=0, return_sigma=True)
     mesh.merge_vertices()
     ms = trimesh_split(mesh, min_edge=100)
     largest_size = 0

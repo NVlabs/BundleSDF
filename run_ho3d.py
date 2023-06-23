@@ -13,7 +13,6 @@ import os,sys
 code_dir = os.path.dirname(os.path.realpath(__file__))
 sys.path.append(f'{code_dir}/BundleTrack/scripts')
 from data_reader import *
-from vos_wrapper import XmemRunner
 
 
 def run_one_video(video_dir,out_dir):
@@ -51,8 +50,6 @@ def run_one_video(video_dir,out_dir):
 
   tracker = BundleSdf(cfg_track_dir=cfg_track_dir, cfg_nerf_dir=cfg_nerf_dir, start_nerf_keyframes=5, use_gui=args.use_gui)
 
-  segmenter = XmemRunner()
-
   for i,color_file in enumerate(reader.color_files):
     color = cv2.imread(color_file)
     H,W = color.shape[:2]
@@ -60,14 +57,9 @@ def run_one_video(video_dir,out_dir):
     if i==0:
       mask = reader.get_mask(0)
       mask = cv2.resize(mask, (W,H), interpolation=cv2.INTER_NEAREST)
-      if use_segmenter:
-        mask = segmenter.run(img=color, msk=mask, is_end=i==len(reader.color_files)-1)
     else:
-      if use_segmenter:
-        mask = segmenter.run(img=color, msk=None, is_end=i==len(reader.color_files)-1)
-      else:
-        mask = reader.get_mask(i)
-        mask = cv2.resize(mask, (W,H), interpolation=cv2.INTER_NEAREST)
+      mask = reader.get_mask(i)
+      mask = cv2.resize(mask, (W,H), interpolation=cv2.INTER_NEAREST)
     id_str = reader.id_strs[i]
     tracker.run(color, depth, reader.K, id_str, mask=mask, occ_mask=None)
 
