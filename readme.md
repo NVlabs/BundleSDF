@@ -40,12 +40,8 @@ year          = {2023},
 
 
 # Docker/Environment setup
-- To get the docker image, there are two options.
+- Build the docker image (this only needs to do once and can take some time).
 ```
-# Option 1
-docker pull nvcr.io/nvidian/bundlesdf
-
-# Option 2: build from scratch
 cd docker
 docker build --network host -t nvcr.io/nvidian/bundlesdf .
 ```
