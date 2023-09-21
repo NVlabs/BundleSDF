@@ -188,6 +188,26 @@ def postprocess_mesh(out_folder):
   mesh.export(f'{out_folder}/mesh/mesh_biggest_component_smoothed.obj')
 
 
+
+def draw_pose():
+  K = np.loadtxt(f'{args.out_folder}/cam_K.txt').reshape(3,3)
+  color_files = sorted(glob.glob(f'{args.out_folder}/color/*'))
+  mesh = trimesh.load(f'{args.out_folder}/textured_mesh.obj')
+  to_origin, extents = trimesh.bounds.oriented_bounds(mesh)
+  bbox = np.stack([-extents/2, extents/2], axis=0).reshape(2,3)
+  out_dir = f'{args.out_folder}/pose_vis'
+  os.makedirs(out_dir, exist_ok=True)
+  logging.info(f"Saving to {out_dir}")
+  for color_file in color_files:
+    color = imageio.imread(color_file)
+    pose = np.loadtxt(color_file.replace('.png','.txt').replace('color','ob_in_cam'))
+    pose = pose@np.linalg.inv(to_origin)
+    vis = draw_posed_3d_box(K, color, ob_in_cam=pose, bbox=bbox, line_color=(255,255,0))
+    id_str = os.path.basename(color_file).replace('.png','')
+    imageio.imwrite(f'{out_dir}/{id_str}.png', vis)
+
+
+
 if __name__=="__main__":
   parser = argparse.ArgumentParser()
   parser.add_argument('--mode', type=str, default="run_video", help="run_video / global_refine / get_mesh")
@@ -205,5 +225,7 @@ if __name__=="__main__":
     run_one_video_global_nerf(out_folder=args.out_folder)
   elif args.mode=='get_mesh':
     postprocess_mesh(out_folder=args.out_folder)
+  elif args.mode=='draw_pose':
+    draw_pose()
   else:
     raise RuntimeError

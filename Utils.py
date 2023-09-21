@@ -512,3 +512,42 @@ def mesh_to_real_world(mesh,pose_offset,translation,sc_factor):
     mesh.vertices = mesh.vertices/sc_factor - np.array(translation).reshape(1,3)
     mesh.apply_transform(pose_offset)
     return mesh
+
+
+def draw_posed_3d_box(K, img, ob_in_cam, bbox, line_color=(0,255,0), linewidth=2):
+  '''
+  @bbox: (2,3) min/max
+  @line_color: RGB
+  '''
+  min_xyz = bbox.min(axis=0)
+  xmin, ymin, zmin = min_xyz
+  max_xyz = bbox.max(axis=0)
+  xmax, ymax, zmax = max_xyz
+
+  def draw_line3d(start,end,img):
+    pts = np.stack((start,end),axis=0).reshape(-1,3)
+    pts = (ob_in_cam@to_homo(pts).T).T[:,:3]   #(2,3)
+    projected = (K@pts.T).T
+    uv = np.round(projected[:,:2]/projected[:,2].reshape(-1,1)).astype(int)   #(2,2)
+    img = cv2.line(img, uv[0].tolist(), uv[1].tolist(), color=line_color, thickness=linewidth)
+    return img
+
+  for y in [ymin,ymax]:
+    for z in [zmin,zmax]:
+      start = np.array([xmin,y,z])
+      end = start+np.array([xmax-xmin,0,0])
+      img = draw_line3d(start,end,img)
+
+  for x in [xmin,xmax]:
+    for z in [zmin,zmax]:
+      start = np.array([x,ymin,z])
+      end = start+np.array([0,ymax-ymin,0])
+      img = draw_line3d(start,end,img)
+
+  for x in [xmin,xmax]:
+    for y in [ymin,ymax]:
+      start = np.array([x,y,zmin])
+      end = start+np.array([0,0,zmax-zmin])
+      img = draw_line3d(start,end,img)
+
+  return img
