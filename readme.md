@@ -73,9 +73,6 @@ python run_custom.py --mode run_video --video_dir /home/bowen/debug/2022-11-18-1
 
 # 2) (Optinal) Run global refinement post-processing to refine the mesh
 python run_custom.py --mode global_refine --video_dir /home/bowen/debug/2022-11-18-15-10-24_milk --out_folder /home/bowen/debug/bundlesdf_2022-11-18-15-10-24_milk   # Change the path to your video_directory
-
-# 3) Get the auto-cleaned mesh
-python run_custom.py --mode get_mesh --video_dir /home/bowen/debug/2022-11-18-15-10-24_milk --out_folder /home/bowen/debug/bundlesdf_2022-11-18-15-10-24_milk
 ```
 
 - Finally the results will be dumped in the `out_folder`, including the tracked poses stored in `ob_in_cam/` and reconstructed mesh with texture `textured_mesh.obj`.
