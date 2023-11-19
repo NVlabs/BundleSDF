@@ -1505,6 +1505,8 @@ class NerfRunner:
       xyz_map = depth2xyzmap(render_depth, self.K)
       mask = self.masks[i].reshape(self.H,self.W).astype(bool)
       valid = (render_depth.reshape(self.H,self.W)>=0.1*self.cfg['sc_factor']) & (mask)
+      if valid.sum()==0:
+        continue
       pts = xyz_map[valid].reshape(-1,3)
       pts = transform_pts(pts, cvcam_in_ob)
       ray_colors = rgbs_raw[i][valid].reshape(-1,3)
