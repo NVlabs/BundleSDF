@@ -210,7 +210,7 @@ def draw_pose():
 
 if __name__=="__main__":
   parser = argparse.ArgumentParser()
-  parser.add_argument('--mode', type=str, default="run_video", help="run_video / global_refine / get_mesh")
+  parser.add_argument('--mode', type=str, default="run_video", help="run_video/global_refine/draw_pose")
   parser.add_argument('--video_dir', type=str, default="/home/bowen/debug/2022-11-18-15-10-24_milk/")
   parser.add_argument('--out_folder', type=str, default="/home/bowen/debug/bundlesdf_2022-11-18-15-10-24_milk")
   parser.add_argument('--use_segmenter', type=int, default=0)
@@ -223,8 +223,6 @@ if __name__=="__main__":
     run_one_video(video_dir=args.video_dir, out_folder=args.out_folder, use_segmenter=args.use_segmenter, use_gui=args.use_gui)
   elif args.mode=='global_refine':
     run_one_video_global_nerf(out_folder=args.out_folder)
-  elif args.mode=='get_mesh':
-    postprocess_mesh(out_folder=args.out_folder)
   elif args.mode=='draw_pose':
     draw_pose()
   else:
